@@ -98,14 +98,11 @@ void loop() {
   if (millis() - lastActivityTime > 10000) {
     displayMessage("Your family has been inactive for a long time");
     h = 2;
-    int t = 0;  
-    String url = String(serverName) + "?t=" + t + "&h=" + h;
-    Serial.println(url);       
-    response = httpGETRequest(url.c_str());
   }
-
-
-  
+  int t = 0;  
+  String url = String(serverName) + "?t=" + t + "&h=" + h;
+  Serial.println(url);       
+  response = httpGETRequest(url.c_str());
 }
 
 bool detectActivity() {
