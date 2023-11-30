@@ -66,7 +66,7 @@ app.get("/setValue", function (req, res) {
 	db.collection("dataWeather").insert(dataObj, function(err,result){
 		console.log("added data: " + JSON.stringify(dataObj));
 	});
-  res.send(VALUEtime.toString());
+  res.send(VALUEt.toString() + " " + VALUEh + " " + VALUEtime + "\r");
 });
 
 
