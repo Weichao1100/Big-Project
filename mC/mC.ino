@@ -2,17 +2,14 @@
 #include <LilyGoWatch.h>
 TTGOClass *ttgo;
 
-#include <SimpleDHT.h>
-
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-
-const char* ssid = "Richard";
-const char* password = "13zuoshuaige";
+const char* ssid = "GalaxyM31";
+const char* password = "nithish_wifi";
 
 //Your Domain name with URL path or IP address with path
-const char* serverName = "http://54.226.243.96:80/setValue";
+const char* serverName = "http://192.168.0.195:8080/sendData";
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
@@ -24,16 +21,11 @@ unsigned long timerDelay = 300;
 
 String response;
 
-// for DHT11,
-//      VCC: 5V or 3V
-//      GND: GND
-//      DATA: 21 or 25
-int pinDHT11 = 25;
-SimpleDHT11 dht11(pinDHT11);
+// PIR传感器连接到ESP32的GPIO25
+int pinPIR = 25;
 
-double start_time;
-
-
+// 活动检测变量
+unsigned long lastActivityTime = 0;
 String httpGETRequest(const char* serverName) {
   HTTPClient http;
     
@@ -59,19 +51,24 @@ String httpGETRequest(const char* serverName) {
 
   return payload;
 }
-
 void setup() {
+  // 初始化手表
   Serial.begin(115200);
     ttgo = TTGOClass::getWatch();
     ttgo->begin();
     ttgo->openBL();
-    
-    ttgo->tft->fillScreen(TFT_BLACK);
-    ttgo->tft->setTextColor(TFT_WHITE, TFT_BLACK);
-    ttgo->tft->setTextFont(4);
+    ttgo->tft->init();
 
-    
-      WiFi.begin(ssid, password);
+  // 初始化PIR传感器
+  pinMode(pinPIR, INPUT);
+
+  // 初始化屏幕
+  ttgo->tft->fillScreen(TFT_BLACK);
+  ttgo->tft->setTextColor(TFT_WHITE, TFT_BLACK);
+  ttgo->tft->setCursor(0, 0);
+  ttgo->tft->setTextSize(4);
+
+    WiFi.begin(ssid, password);
   Serial.println("Connecting");
   while(WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -83,46 +80,43 @@ void setup() {
  
   Serial.println("Timer set to 5 seconds (timerDelay variable), it will take 5 seconds before publishing the first reading.");
 
-
-start_time = millis();
 }
 
 void loop() {
-
-  // start working...
-  Serial.println("=================================");
-  Serial.println("Sample DHT11...");
- 
-
-  // read without samples.
-  byte temperature = 0;
-  byte humidity = 0;
-  int err = SimpleDHTErrSuccess;
-  if ((err = dht11.read(&temperature, &humidity, NULL)) != SimpleDHTErrSuccess) {
-    Serial.print("Read DHT11 failed, err="); Serial.println(err); delay(1000);
-    return;
+  // 检测活动
+  int h = 0;
+  if (detectActivity()) {
+    lastActivityTime = millis();
+    displayMessage("alive");
+    h=1;
   }
 
-  Serial.print("Sample OK: ");
-  Serial.print(String((float)temperature) + "* C, ");
-  Serial.println(String((float)humidity) + "% H");
-
-      ttgo->tft->drawString(String((int)temperature*1.8 + 32) + " *F",  5, 10);
-      ttgo->tft->drawString(String(humidity) + " % H",  5, 40);
-
-    if(millis()-start_time >= 5000)
-    {
-      int t = (int)temperature;
-      int h = (int)humidity;
-      String url = String(serverName) + "?t=" + t + "&h=" + h;
-      Serial.println(url);       
-      response = httpGETRequest(url.c_str());
-      Serial.println(response);
-      start_time = millis();
-    }
+  // 检查自上次活动以来是否已过10秒钟
+  if (millis() - lastActivityTime > 10000) {
+    displayMessage("Your family has been inactive for a long time");
+    h = 2;
+    int t = 0;  
+    String url = String(serverName) + "?t=" + t + "&h=" + h;
+    Serial.println(url);       
+    response = httpGETRequest(url.c_str());
+  }
 
 
+  
+}
 
-  // DHT11 sampling rate is 1HZ.
-  //delay(5000);
+bool detectActivity() {
+  int sensorValue = digitalRead(pinPIR);
+  Serial.print("Sensor Value: ");
+  Serial.println(sensorValue);
+  if (sensorValue == HIGH) {
+    return true;
+  }
+  return false;
+}
+
+void displayMessage(String message) {
+  ttgo->tft->fillScreen(TFT_BLACK);
+  ttgo->tft->setCursor(0, 0);
+  ttgo->tft->println(message);
 }
