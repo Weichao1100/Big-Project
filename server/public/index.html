@@ -1,36 +1,46 @@
 <html>
 <head>
-<script src='asyncReq.js'></script>
 <script>
-function getDataFromServer()
-{
-	var url = "./setValue"
-	var callback = function(data){
-		console.log(data, typeof data);
-		var args = data.split(" ");
-		console.log(args);
-		var t = parseFloat(args[0]) * 1.8 + 32;
-		var h = args[1];
-		var time = args[2];
+function getDataFromServer() {
+    var url = "./setValue";
+    var xhr = new XMLHttpRequest();
+    
+    // Set to false to make the request synchronous
+    xhr.open("GET", url, false);
 
-		var output =
-		"<h2> Temperature </h2> <p>" + t + " &deg; F</p>"+
-		"<h2> Humidity </h2> <p>" + h + " %</p>"+
-		"<p> at " + new Date(parseInt(time)) + "</p>";
+    xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            // Process the response here
+            console.log(xhr.responseText, typeof xhr.responseText);
+            var args = xhr.responseText.split(" ");
+            console.log(args);
+            var t = parseFloat(args[0]) * 1.8 + 32;
+            var h = args[1];
+            var time = args[2];
 
-		document.getElementById("data").innerHTML = output;
+            var output =
+            "<h2> Temperature </h2> <p>" + t + " &deg; F</p>"+
+            "<h2> Humidity </h2> <p>" + h + " %</p>"+
+            "<p> at " + new Date(parseInt(time)) + "</p>";
 
-	}
-	loadFile(url, callback);
+            document.getElementById("data").innerHTML = output;
+        } else {
+            console.error('The request failed!');
+        }
+    };
+
+    xhr.onerror = function () {
+        console.error('The request failed!');
+    };
+
+    xhr.send();
 }
-
 
 </script>
 </head>
 
-<body style='text-align:center; font-family:Helvetica' onload='setInterval("getDataFromServer()", 1000)'>
-	<h1> Situation </h1>
-	<div id='data'></div>
-
+<body style='text-align:center; font-family:Helvetica' onload='setInterval(getDataFromServer, 1000)'>
+    <h1> Situation </h1>
+    <div id='data'></div>
 </body>
 </html>
