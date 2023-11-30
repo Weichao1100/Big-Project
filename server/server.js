@@ -51,10 +51,22 @@ app.get("/getData", function (req, res) {
 
 app.get("/getValue", function (req, res) {
   //res.writeHead(200, {'Content-Type': 'text/plain'});
+  console.log(req)
+  console.log(res)
+  VALUEt = req.query.t;
+  VALUEh = req.query.h;
+  console.log('___VALUEt____' + VALUEt)
+  console.log('___VALUEh____' + VALUEh)
+  VALUEtres = res.query.t;
+  VALUEhres = res.query.h;
+  console.log('___VALUEtres____' + VALUEtres)
+  console.log('___VALUEhres____' + VALUEhres)
+  VALUEtime = new Date().getTime();
   res.send(VALUEt.toString() + " " + VALUEh + " " + VALUEtime + "\r");
 });
 
 app.get("/setValue", function (req, res) {
+  console.log(req)
   VALUEt = parseFloat(req.query.t);
   VALUEh = parseFloat(req.query.h);
   VALUEtime = new Date().getTime();
