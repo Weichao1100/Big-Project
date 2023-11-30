@@ -57,10 +57,10 @@ app.get("/getValue", function (req, res) {
   VALUEh = req.query.h;
   console.log('___VALUEt____' + VALUEt)
   console.log('___VALUEh____' + VALUEh)
-  VALUEtres = res.query.t;
-  VALUEhres = res.query.h;
-  console.log('___VALUEtres____' + VALUEtres)
-  console.log('___VALUEhres____' + VALUEhres)
+  // VALUEtres = res.query.t;
+  // VALUEhres = res.query.h;
+  // console.log('___VALUEtres____' + VALUEtres)
+  // console.log('___VALUEhres____' + VALUEhres)
   VALUEtime = new Date().getTime();
   res.send(VALUEt.toString() + " " + VALUEh + " " + VALUEtime + "\r");
 });
