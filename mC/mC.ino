@@ -2,14 +2,17 @@
 #include <LilyGoWatch.h>
 TTGOClass *ttgo;
 
+#include <SimpleDHT.h>
+
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-const char* ssid = "GalaxyM31";
-const char* password = "nithish_wifi";
+
+const char* ssid = "Richard";
+const char* password = "13zuoshuaige";
 
 //Your Domain name with URL path or IP address with path
-const char* serverName = "http://192.168.0.195:8080/sendData";
+const char* serverName = "http://54.166.179.141/setValue";
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
