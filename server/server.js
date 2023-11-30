@@ -72,22 +72,18 @@ app.get("/setValue", function (req, res) {
   VALUEh = req.query.h;
   console.log('___VALUEt____' + VALUEt)
   console.log('___VALUEh____' + VALUEh)
-  VALUEtres = res.query.t;
-  VALUEhres = res.query.h;
-  console.log('___VALUEtres____' + VALUEtres)
-  console.log('___VALUEhres____' + VALUEhres)
   // VALUEt = parseFloat(req.query.t);
   // VALUEh = parseFloat(req.query.h);
   VALUEtime = new Date().getTime();
-	var dataObj = {
-		t: VALUEt,
-		h: VALUEh,
-		time: VALUEtime
-	}
-	db.collection("dataWeather").insert(dataObj, function(err,result){
-		console.log("added data: " + JSON.stringify(dataObj));
-	});
-  res.send(VALUEt.toString() + " " + VALUEh + " " + VALUEtime + "\r");
+	// var dataObj = {
+	// 	t: VALUEt,
+	// 	h: VALUEh,
+	// 	time: VALUEtime
+	// }
+	// db.collection("dataWeather").insert(dataObj, function(err,result){
+	// 	console.log("added data: " + JSON.stringify(dataObj));
+	// });
+  res.send(VALUEt + " " + VALUEh + " " + VALUEtime + "\r");
 });
 
 
