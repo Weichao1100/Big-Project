@@ -4,7 +4,7 @@
 <script>
 function getDataFromServer()
 {
-	var url = "./getValue"
+	var url = "./setValue"
 	var callback = function(data){
 		console.log(data, typeof data);
 		var args = data.split(" ");
@@ -12,7 +12,6 @@ function getDataFromServer()
 		var t = parseFloat(args[0]) * 1.8 + 32;
 		var h = args[1];
 		var time = args[2];
-		console.log(h);
 		if (h === 1) {
 			var output =
 			"<h2> alive </h2>";
