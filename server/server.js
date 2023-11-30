@@ -50,7 +50,6 @@ app.get("/getData", function (req, res) {
 
 
 app.get("/getValue", function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
   res.send(VALUEt.toString() + " " + VALUEh + " " + VALUEtime + "\r");
 });
 
