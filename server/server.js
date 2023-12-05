@@ -44,7 +44,6 @@ app.get("/getData", function (req, res) {
   var from = parseInt(req.query.from);
   var to = parseInt(req.query.to);
   db.collection("dataWeather").find({time:{$gt:from, $lt:to}}).sort({time:-1}).toArray(function(err, result){
-	  console.log("--->>>查询结果: ",JSON.stringify(result.[0]))
     res.send(JSON.stringify(result[0]));
   });
 });
