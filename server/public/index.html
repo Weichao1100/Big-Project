@@ -12,7 +12,8 @@ function getDataFromServer()
 		// var t = 32;
 		// var h = args[1];
 		// var time = args[2];
-		const {t,h,time} = data
+		console.log(data)
+		const {t,h,time} = JSON.parse(data.data)
 		if (h === 1) {
 			var output =
 			"<h2> alive </h2>";
