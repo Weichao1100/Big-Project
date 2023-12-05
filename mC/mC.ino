@@ -103,6 +103,9 @@ void loop() {
   String url = String(serverName) + "?t=" + t + "&h=" + h;
   Serial.println(url);       
   response = httpGETRequest(url.c_str());
+
+  Serial.println(response);
+      start_time = millis();
 }
 
 bool detectActivity() {
