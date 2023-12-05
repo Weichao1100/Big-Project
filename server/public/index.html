@@ -6,7 +6,7 @@ function getDataFromServer()
 {
 	var fromDate = new Date('2022').getTime()
 	var toDate = new Date('2024').getTime()
-	var url = `/getData?from=${fromDate}&to=&${toDate}`
+	var url = `/getData?from=${fromDate}&to=${toDate}`
 	var callback = function(data){
 		console.log(data, typeof data);
 		var args = data.split(" ");
