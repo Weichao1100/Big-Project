@@ -6,7 +6,7 @@ function getDataFromServer()
 {
 	var url = "/getData"
 	var callback = function(data){
-		console.log(data, typeof data,'返回数据');
+		console.log(data, typeof data);
 		var args = data.split(" ");
 		console.log(args);
 		var t = 32;
@@ -30,4 +30,3 @@ function getDataFromServer()
 	<h1> Situation </h1>
 	<div id='data'></div>
 </body>
-</html>
