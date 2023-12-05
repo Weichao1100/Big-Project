@@ -8,12 +8,11 @@ function getDataFromServer()
 	var toDate = new Date('2024').getTime()
 	var url = `/getData?from=${fromDate}&to=${toDate}`
 	var callback = function(data){
-		console.log(data, typeof data);
-		var args = data.split(" ");
-		console.log(args);
-		var t = 32;
-		var h = args[1];
-		var time = args[2];
+		// var args = data.split(" ");
+		// var t = 32;
+		// var h = args[1];
+		// var time = args[2];
+		const {t,h,time} = data
 		if (h === 1) {
 			var output =
 			"<h2> alive </h2>";
